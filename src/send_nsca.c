@@ -111,10 +111,8 @@ int main(int argc, char **argv){
 		printf(" [to_sec]           = Number of seconds before connection attempt times out.\n");
 		printf("                      (default timeout is %d seconds)\n",DEFAULT_SOCKET_TIMEOUT);
 		printf(" [delim]            = Delimiter to use when parsing input (defaults to a tab).\n");
-		printf("                      Honors hex formatted values, e.g. 0x09.\n");
 		printf(" [set_delim]        = Delimiter to use when parsing different sets \n");
 		printf("                      (defaults to an ETB character).\n");
-		printf("                      Honors hex formatted values, e.g. 0x17.\n");
 		printf(" [config_file]      = Name of config file to use\n");
 		printf(" --legacy-2-7-mode  = Allow sending to NSCA 2.7 daemon. This can also be specified in send_nsca.cfg, which takes precedence.\n");
 		printf("\n");
@@ -497,12 +495,8 @@ int process_arguments(int argc, char **argv){
 		/* delimiter to use when parsing input */
 		else if(!strcmp(argv[x-1],"-d")){
 			if(x<argc){
-				errno=0;
-				long int d = strtol(argv[x], NULL, 16);
-				if(errno){
-				    snprintf(delimiter,sizeof(delimiter),"%s",argv[x]);
-				    delimiter[sizeof(delimiter)-1]='\x0';
-			        }else delimiter[0]= (char) d;
+				snprintf(delimiter,sizeof(delimiter),"%s",argv[x]);
+				delimiter[sizeof(delimiter)-1]='\x0';
 				x++;
 				}
 			else {
@@ -513,12 +507,8 @@ int process_arguments(int argc, char **argv){
 		/* delimiter to use when parsing input set */
 		else if(!strcmp(argv[x-1],"-ds")){
 			if(x<argc){
-				errno=0;
-				long int d = strtol(argv[x], NULL, 16);
-				if(errno){
-				    snprintf(block_delimiter,sizeof(block_delimiter),"%s",argv[x]);
-				    block_delimiter[sizeof(block_delimiter)-1]='\x0';
-			        }else block_delimiter[0]= (char) d;
+				snprintf(block_delimiter,sizeof(block_delimiter),"%s",argv[x]);
+				block_delimiter[sizeof(block_delimiter)-1]='\x0';
 				x++;
 				}
 			else {
